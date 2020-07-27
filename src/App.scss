@@ -1,0 +1,14 @@
+.app {
+  background-color: #ddd;
+  width: 400px;
+  height: 400px;
+  position: relative;
+  margin: auto;
+}
+
+h2 {
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+}
