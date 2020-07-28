@@ -1,0 +1,15 @@
+form {
+  text-align: center;
+}
+
+input {
+  border: 1px solid #DDD;
+  border-radius: 10px;
+  height: 30px;
+  width: 200px;
+}
+
+input::focus {
+  outline: 3px solid orange;
+}
+

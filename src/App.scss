@@ -1,13 +1,14 @@
 .app {
   background-color: #ddd;
   width: 400px;
-  height: 400px;
+  height: 100%;
+  padding-bottom: 30px;
   position: relative;
   margin: auto;
   border-radius: 10px;
 }
 
-h2 {
+h1 {
   color: green;
   text-align: center;
 }
