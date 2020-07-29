@@ -1,27 +1,30 @@
 import React, { useState, useEffect } from "react";
 import "./App.scss";
 
-import TodoList from "./components/TodoList/TodoList";
-import TodoForm from "./components/TodoForm/TodoForm";
-import PostList from "./components/PostList/PostList";
+// import TodoList from "./components/TodoList/TodoList";
+// import TodoForm from "./components/TodoForm/TodoForm";
 
-const uuid = () => {
-  const temp_url = URL.createObjectURL(new Blob());
-  const uuid = temp_url.toString();
-  URL.revokeObjectURL(temp_url);
-  return uuid.substr(uuid.lastIndexOf("/") + 1);
-};
+import PostList from "./components/PostList/PostList";
+import Pagination from "./components/Pagination/Pagination";
+import { objectQueryStringParameter } from "./Utils";
 
 const App = () => {
-  const [todoList, setTodoList] = useState(() =>
-    JSON.parse(localStorage.getItem("newTodos") ?? "[]")
-  );
+  // const [todoList, setTodoList] = useState(() =>
+  //   JSON.parse(localStorage.getItem("newTodos") ?? "[]")
+  // );
 
   const [postList, setPostList] = useState([]);
+  const [pagination, setPagination] = useState({
+    _page: 1,
+    _limit: 4
+  });
+
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const url = "http://localhost:3001/posts?_page=3&_limit=3";
+        const queryString = objectQueryStringParameter(pagination);
+        console.log("queryString", queryString);
+        const url = `http://localhost:3001/posts?${queryString}`;
         const response = await fetch(url);
         const posts = await response.json();
         setPostList(posts);
@@ -30,30 +33,38 @@ const App = () => {
       }
     };
     fetchPosts();
-  }, []);
+  }, [pagination]);
 
-  const handleOnClick = todo => {
-    const indexTodo = todoList.findIndex(e => e.id === todo.id);
-    if (indexTodo >= 0) {
-      const todos = [...todoList];
-      todos.splice(indexTodo, 1);
-      setTodoList(todos);
-      localStorage.setItem("newTodos", JSON.stringify(todos));
-    }
+  const handleOnChangPage = newPage => {
+    setPagination({
+      ...pagination,
+      _page: newPage
+    });
   };
 
-  const handleOnSubmit = value => {
-    const newTodos = [...todoList, { id: uuid(), name: value }];
-    setTodoList(newTodos);
-    localStorage.setItem("newTodos", JSON.stringify(newTodos));
-  };
+  // const handleOnClick = todo => {
+  //   const indexTodo = todoList.findIndex(e => e.id === todo.id);
+  //   if (indexTodo >= 0) {
+  //     const todos = [...todoList];
+  //     todos.splice(indexTodo, 1);
+  //     setTodoList(todos);
+  //     localStorage.setItem("newTodos", JSON.stringify(todos));
+  //   }
+  // };
+
+  // const handleOnSubmit = value => {
+  //   const newTodos = [...todoList, { id: uuid(), name: value }];
+  //   setTodoList(newTodos);
+  //   localStorage.setItem("newTodos", JSON.stringify(newTodos));
+  // };
 
   return (
     <div className="app">
       <h1>Learn react hook</h1>
-      <TodoForm onSubmit={handleOnSubmit} />
-      <TodoList todos={todoList} onTodoClick={handleOnClick} />
+      {/* <TodoForm onSubmit={handleOnSubmit} /> */}
+      {/* <TodoList todos={todoList} onTodoClick={handleOnClick} /> */}
       <PostList postList={postList} />
+      <Pagination pagination={pagination} onChangePage={handleOnChangPage} />
     </div>
   );
 };

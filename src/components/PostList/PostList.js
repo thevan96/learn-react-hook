@@ -5,9 +5,6 @@ const PostList = props => {
   const { postList } = props;
   return (
     <div className="post-list">
-      <h3 style={{
-        textAlign: 'center',
-      }}>Post list</h3>
       <ul>
         {postList.map(post => (
           <li key={post.id}>{post.title}</li>
