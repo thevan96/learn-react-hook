@@ -1,20 +1,15 @@
-import React, { useState } from "react";
+import React from "react";
 import "./App.scss";
 
-import Clock from "./components/Clock/Clock";
+import ColorBox from './components/ColorBox/ColorBox';
+import useMagicBox from './hooks/useMagicColor';
 
 const App = () => {
-  const [isShow, setIsShow] = useState(true);
-
-  const handleOnClick = () => {
-    setIsShow(!isShow);
-  };
+  const color = useMagicBox();
 
   return (
     <div className="app">
-      <h1>Learn react hook</h1>
-      {isShow && <Clock />}
-      <button onClick={handleOnClick}> On click!</button>
+      <ColorBox {...color} />
     </div>
   );
 };
